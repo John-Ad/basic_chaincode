@@ -267,7 +267,7 @@ func (smartContr *SmartContract) AddFrame(ctx contractapi.TransactionContextInte
 }
 
 //	add new transaction
-func (smartContr *SmartContract) AddTransaction(ctx contractapi.TransactionContextInterface, id string, buyer string, stage string, items []string, numOfItems int, tranType string) error {
+func (smartContr *SmartContract) AddTransaction(ctx contractapi.TransactionContextInterface, id string, buyer string, items []string, numOfItems int, tranType string) error {
 	exists, err := smartContr.TransactionExists(ctx, id)
 	if err != nil {
 		return err
@@ -297,7 +297,7 @@ func (smartContr *SmartContract) AddTransaction(ctx contractapi.TransactionConte
 	transaction := Transaction{
 		TxID:       id,
 		Buyer:      buyer,
-		Stage:      stage,
+		Stage:      SALE_STAGE_AWAIT_PAYMENT,
 		Items:      frames,
 		NumOfItems: numOfItems,
 		Amount:     amount,
@@ -361,14 +361,14 @@ func (smartContr *SmartContract) UpdateTransaction(ctx contractapi.TransactionCo
 		return err
 	}
 
-	var transaction *Transaction
+	var transaction Transaction
 
 	transactionJSON, err := ctx.GetStub().GetState(key)
 	if err != nil {
 		return err
 	}
 
-	err = json.Unmarshal(transactionJSON, transaction)
+	err = json.Unmarshal(transactionJSON, &transaction)
 	if err != nil {
 		return err
 	}
