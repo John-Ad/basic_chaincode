@@ -1,0 +1,21 @@
+#navContainerDiv{
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-evenly;
+
+    width: 90%;
+    height: 10%;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 4px;
+
+    background-color: rgb(50, 50, 50);
+}
+.navOpts:hover{
+    color: red;
+    cursor: pointer;
+}
+
