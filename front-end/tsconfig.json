@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution":"node",
+        "noImplicitAny": true,
+        "module": "es6",
+        "jsx":"react",
+        "target": "es5",
+        "allowJs": true
+    },
+    "include":["src"],
+    "files": [
+        "src/main.ts"
+    ]
+}

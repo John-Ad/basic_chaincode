@@ -1,15 +1,19 @@
-import { Gateway, GatewayOptions } from 'fabric-network'
+import { Gateway, GatewayOptions, Network, Contract } from 'fabric-network'
 import * as path from 'path'
 import { buildCCPOrg1, buildWallet, prettyJSONString, buildCAClient, enrollAdmin, registerAndEnrollUser } from './utils'
 
-// consts
+// consts for network initialization
 const channelName = 'mychannel';
 const chaincodeName = 'basic';
 const mspOrg1 = 'Org1MSP';
 const walletPath = path.join(__dirname, 'wallet');
 const org1UserId = 'appUser';
 
-async function main() {
+// vars for using network and chaincode
+let network: Network;
+let contract: Contract;
+
+let initSetup = async () => {
     try {
         //################################################################
         //###   build net conf profile, wallet, register and enroll users
@@ -37,29 +41,53 @@ async function main() {
             identity: org1UserId,
             discovery: { enabled: true, asLocalhost: true }//network deployed locally
         };
+        // connect to gateway
+        await gateway.connect(ccp, gatewayOpts);
 
-        try {
-            // connect to gateway
-            await gateway.connect(ccp, gatewayOpts);
+        // build net instance based on channel
+        network = await gateway.getNetwork(channelName);
+        contract = network.getContract(chaincodeName);
 
-            // build net instance based on channel
-            const network = await gateway.getNetwork(channelName);
-            const contract = network.getContract(chaincodeName);
-
-            // invoke chaincode functions
-            console.log('Submitting transaction: InitLedger\nInitializing ledger with some assets');
-            let res = await contract.submitTransaction('InitLedger');
-            console.log(res.toString());
-
-            console.log('Submitting transaction: GetAllFrames');
-            res = await contract.evaluateTransaction('GetAllFrames');
-            console.log(res.toString());
-        } catch (err) {
-            console.log(err);
-        }
     } catch (err) {
-        console.log(err)
+        console.log(err);
     }
 }
 
+//################################################################
+//###   chaincode invocation functions
+//################################################################
+async function submitTransaction(functionName: string, args: string[]): Promise<Buffer> {
+    try {
+        let res = await contract.submitTransaction(functionName, ...args);
+        return res;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+let initLedger = async () => {
+    let json = await submitTransaction("InitLedger", []);
+    console.log(json.toString());
+}
+
+let addFrame = async (id: string, size: string, color: string, price: string) => {
+    let json = await submitTransaction("AddFrame", [id, size, color, price]);
+    console.log(json.toString());
+}
+
+let getFrame = async (id: string) => {
+    let json = await submitTransaction("GetFrame", [id]);
+    console.log(json.toString());
+}
+
+let getAllFrames = async () => {
+    let json = await submitTransaction("GetAllFrames", []);
+    console.log(json.toString());
+}
+
+async function main() {
+    await initSetup();
+    //await initLedger();
+    await getAllFrames();
+}
 main();
