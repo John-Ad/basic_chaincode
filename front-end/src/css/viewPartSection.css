@@ -1,0 +1,75 @@
+#viewPartContainer{
+    display: flex;
+    flex-direction: column;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    border: 2px solid rgb(20, 20, 20);
+    border-radius: 30px;
+
+    margin-top: 10px;
+
+    width: 70%;
+    height: 80vh;
+
+    background-color: rgb(20, 20, 20);
+}
+
+.itemDetailsDiv{
+    display: flex;
+    flex-direction: row;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    border-radius: 2px solid rgb(10, 10, 10);
+    border-radius: 20px;
+
+    margin-top: 10px;
+
+    justify-content: space-evenly;
+
+    width: 80%;
+    height: 10%;
+
+    background-color: rgb(10, 10, 10);
+}
+
+.detailTitle{
+    color: blueviolet;
+    width: fit-content;
+}
+
+#viewPartSearchInput{
+    width: fit-content;
+    height: 70%;
+
+    margin-left: 30px;
+    margin-top: 4px;
+
+    text-align: center;
+}
+
+#viewPartSearchSubmitDiv{
+    width: 50%;
+    border: 2px solid;
+    color: beige;
+}
+#viewPartSearchSubmitDiv:hover{
+    color: blueviolet;
+    cursor: pointer;
+}
+#viewPartSearchSubmitDiv:hover #viewPartSearchSubmit{
+    color: blueviolet;
+}
+#viewPartSearchSubmit{
+    color: beige;
+}
+
+
+
+
+
+
+

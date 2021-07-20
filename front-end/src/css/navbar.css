@@ -5,14 +5,17 @@
     justify-content: space-evenly;
 
     width: 90%;
-    height: 10%;
+    height: 9%;
 
     margin-left: auto;
     margin-right: auto;
 
+    border: 2px solid beige;
+    border-radius: 30px;
+
     margin-top: 4px;
 
-    background-color: rgb(50, 50, 50);
+    background-color: rgb(40, 40, 40);
 }
 .navOpts:hover{
     color: red;

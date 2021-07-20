@@ -7,6 +7,7 @@ import "normalize.css";
 import "./css/main.css";
 import "./css/navbar.css";
 import "./css/addPartSection.css";
+import "./css/viewPartSection.css";
 
 // component imports
 import Base from "./components/base";

@@ -19,13 +19,16 @@ interface IState {
     size: string,
     price: string
 }
+interface IProps {
+    addPart(args: string[]): void
+}
 
-class AddPartSection extends Component<{}, IState> {
+class AddPartSection extends Component<IProps, IState> {
     constructor(props: any) {
         super(props);
 
         this.state = {
-            partType: PART_TYPES.NONE,
+            partType: PART_TYPES.FRAME,
             id: "",
             color: "",
             size: "",
@@ -86,7 +89,7 @@ class AddPartSection extends Component<{}, IState> {
                         <input onChange={(ev) => this.handleInput(ev, INPUT_TYPE.COLOR)} id="colLbl" className="partInput" type="text" placeholder="black" />
                         <label htmlFor="priceLbl" className="partLbl">PRICE</label>
                         <input onChange={(ev) => this.handleInput(ev, INPUT_TYPE.PRICE)} id="priceLbl" className="partInput" type="text" placeholder="300.00" />
-                        <button id="addFramebtn">Add</button>
+                        <div onClick={() => this.props.addPart([this.state.id, this.state.size, this.state.color, this.state.price])} id="addFramebtn"><p>Add</p></div>
                     </React.Fragment>
                 }
             </div>
