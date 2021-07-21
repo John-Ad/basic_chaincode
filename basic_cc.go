@@ -453,14 +453,19 @@ func (smartContr *SmartContract) GetAllFrames(ctx contractapi.TransactionContext
 	}
 
 	var frames []*Frame
-	var frame Frame
 	for frameIter.HasNext() {
+		var frame Frame
+
 		frameVal, err := frameIter.Next()
 		if err != nil {
 			return nil, err
 		}
 
-		json.Unmarshal(frameVal.Value, &frame)
+		err = json.Unmarshal(frameVal.Value, &frame)
+		if err != nil {
+			return nil, err
+		}
+
 		frames = append(frames, &frame)
 	}
 
