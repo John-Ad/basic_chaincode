@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { IFrame } from "../connection";
 
 enum PART_TYPES {
     NONE = 0,
@@ -20,7 +21,7 @@ interface IState {
     price: string
 }
 interface IProps {
-    addPart(args: string[]): void
+    addPart(frame: IFrame): Promise<boolean>
 }
 
 class AddPartSection extends Component<IProps, IState> {
@@ -89,7 +90,21 @@ class AddPartSection extends Component<IProps, IState> {
                         <input onChange={(ev) => this.handleInput(ev, INPUT_TYPE.COLOR)} id="colLbl" className="partInput" type="text" placeholder="black" />
                         <label htmlFor="priceLbl" className="partLbl">PRICE</label>
                         <input onChange={(ev) => this.handleInput(ev, INPUT_TYPE.PRICE)} id="priceLbl" className="partInput" type="text" placeholder="300.00" />
-                        <div onClick={() => this.props.addPart([this.state.id, this.state.size, this.state.color, this.state.price])} id="addFramebtn"><p>Add</p></div>
+                        <div onClick={async () => {
+                            let frame: IFrame = {
+                                id: this.state.id,
+                                size: parseFloat(this.state.size),
+                                color: this.state.color,
+                                price: parseFloat(this.state.price)
+                            };
+                            let res = await this.props.addPart(frame);
+                            if (res) {
+                                alert("Part added successfully");
+                            } else {
+                                alert("Failed to add part");
+                            }
+                        }} id="addFramebtn"><p>Add</p></div>
+
                     </React.Fragment>
                 }
             </div>

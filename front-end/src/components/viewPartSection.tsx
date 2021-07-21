@@ -1,11 +1,13 @@
 // react imports
 import React, { Component } from "react";
+import { IFrame } from "../connection";
 
 interface IState {
     searchInput: string
+    currFrame: IFrame
 }
 interface IProps {
-    searchPart(id: string): void
+    searchPart(id: string): Promise<IFrame>
 }
 
 class ViewPartSection extends Component<IProps, IState> {
@@ -13,7 +15,13 @@ class ViewPartSection extends Component<IProps, IState> {
         super(props);
 
         this.state = {
-            searchInput: ""
+            searchInput: "",
+            currFrame: {
+                id: "",
+                size: 0,
+                color: "",
+                price: 0
+            }
         }
     }
 
@@ -22,19 +30,19 @@ class ViewPartSection extends Component<IProps, IState> {
             <div id="viewPartContainer">
                 <div className="itemDetailsDiv">
                     <h3 className="detailTitle">ID:</h3>
-                    <h3 className="detailValue">skdlfjjsjakfln</h3>
+                    <h3 className="detailValue">{this.state.currFrame.id}</h3>
                 </div>
                 <div className="itemDetailsDiv">
                     <h3 className="detailTitle">Size:</h3>
-                    <h3 className="detailValue">skdlfjjsjakfln</h3>
+                    <h3 className="detailValue">{this.state.currFrame.size}</h3>
                 </div>
                 <div className="itemDetailsDiv">
                     <h3 className="detailTitle">Color:</h3>
-                    <h3 className="detailValue">skdlfjjsjakfln</h3>
+                    <h3 className="detailValue">{this.state.currFrame.color}</h3>
                 </div>
                 <div className="itemDetailsDiv">
                     <h3 className="detailTitle">Price:</h3>
-                    <h3 className="detailValue">skdlfjjsjakfln</h3>
+                    <h3 className="detailValue">{this.state.currFrame.price}</h3>
                 </div>
                 <br></br>
                 <div className="itemDetailsDiv">
@@ -43,7 +51,14 @@ class ViewPartSection extends Component<IProps, IState> {
                 </div>
                 <br></br>
                 <div className="itemDetailsDiv" id="viewPartSearchSubmitDiv">
-                    <h3 onClick={() => this.props.searchPart(this.state.searchInput)} className="detailTitle" id="viewPartSearchSubmit">Submit</h3>
+                    <h3 onClick={async () => {
+                        let res: IFrame = await this.props.searchPart(this.state.searchInput);
+                        if (res) {
+                            this.setState({ currFrame: res });
+                        } else {
+                            alert("frame not found");
+                        }
+                    }} className="detailTitle" id="viewPartSearchSubmit">Submit</h3>
                 </div>
             </div>
         );

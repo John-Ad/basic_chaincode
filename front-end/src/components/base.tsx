@@ -6,11 +6,18 @@ import Navbar from "./navbar";
 import AddPartSection from "./addPartSection";
 import ViewPartSection from "./viewPartSection";
 
+// connection imports
+import Connection from "../connection";
+
+// interface and enum imports
+import { GET_REQ_TYPES, POST_REQ_TYPES, IFrame, ITransaction } from "../connection";
+
 // interface and enum imports
 import { SECTIONS } from "./navbar"
 
 interface IState {
-    currentSection: number,
+    connection: Connection,
+    currentSection: number
 }
 
 class Base extends Component<{}, IState> {
@@ -18,6 +25,7 @@ class Base extends Component<{}, IState> {
         super(props);
 
         this.state = {
+            connection: new Connection(),
             currentSection: SECTIONS.VIEW_PART
         }
     }
@@ -43,12 +51,18 @@ class Base extends Component<{}, IState> {
     //########################################################
     //###   chaincode query handling
     //########################################################
-    addPart = (args: string[]): void => {       // Add a new part
-        console.log(args);
+    addPart = async (frame: IFrame): Promise<boolean> => {       // Add a new part
+        let res = await this.state.connection.postReq(POST_REQ_TYPES.ADD_FRAME, frame);
+        if (res !== 0)
+            return false;
+        return true;
     }
-    searchPart = (id: string): void => {        // search for existing part
-        console.log(id);
+    searchPart = async (id: string): Promise<IFrame> => {        // search for existing part
+        let res: IFrame = await this.state.connection.getReq(GET_REQ_TYPES.GET_FRAME, id);
+        return res;
     }
+    //########################################################
+
 
     //########################################################
     //###   render method
@@ -71,6 +85,7 @@ class Base extends Component<{}, IState> {
             </div>
         );
     }
+    //########################################################
 }
 
 export default Base;

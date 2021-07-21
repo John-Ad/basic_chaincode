@@ -1,6 +1,24 @@
-import { Gateway, GatewayOptions, Network, Contract } from 'fabric-network'
+//#########################################################################
+//###   server related imports
+//#########################################################################
 import * as path from 'path'
+import * as express from 'express';         // esModInterop causes issues with fabric-ca    // default imports are done this way instead
+import { Express, Request, Response, NextFunction } from 'express'
+
+//#########################################################################
+//###   fabric related imports
+//#########################################################################
+import { Gateway, GatewayOptions, Network, Contract } from 'fabric-network'
 import { buildCCPOrg1, buildWallet, prettyJSONString, buildCAClient, enrollAdmin, registerAndEnrollUser } from './utils'
+
+//#########################################################################
+//###   interface and enum imports
+//#########################################################################
+import { IFrame, ITransaction, TRAN_TYPES, SALE_STAGES, CC_FUNCS } from './interfaces'
+
+//#########################################################################
+//###   fabric network setup
+//#########################################################################
 
 // consts for network initialization
 const channelName = 'mychannel';
@@ -20,13 +38,13 @@ let initSetup = async () => {
         //################################################################
         // build connection profile
         const ccp = buildCCPOrg1();
-        console.log(ccp);
+        //console.log(ccp);
         // build ca client profile
         const caClient = buildCAClient(ccp, 'ca.org1.example.com');
-        console.log(caClient);
+        //console.log(caClient);
         // setup a wallet to store credentials
         const wallet = await buildWallet(walletPath);
-        console.log(wallet);
+        //console.log(wallet);
         // enroll admin and store creds in wallet
         await enrollAdmin(caClient, wallet, mspOrg1);
         // register and enroll user
@@ -52,6 +70,9 @@ let initSetup = async () => {
         console.log(err);
     }
 }
+//################################################################################################################################
+//################################################################################################################################
+
 
 //################################################################
 //###   chaincode invocation functions
@@ -66,28 +87,84 @@ async function submitTransaction(functionName: string, args: string[]): Promise<
 }
 
 let initLedger = async () => {
-    let json = await submitTransaction("InitLedger", []);
+    let json = await submitTransaction(CC_FUNCS.INIT_LEDGER, []);
+    console.log("Initialized ledger with test values");
     console.log(json.toString());
 }
 
-let addFrame = async (id: string, size: string, color: string, price: string) => {
-    let json = await submitTransaction("AddFrame", [id, size, color, price]);
+let addFrame = async (args: string[]): Promise<number> => {
+    let json = await submitTransaction(CC_FUNCS.ADD_FRAME, args);
     console.log(json.toString());
+    if (json.length !== 0)
+        return 1;
+    return 0;
 }
 
-let getFrame = async (id: string) => {
-    let json = await submitTransaction("GetFrame", [id]);
+let getFrame = async (id: string): Promise<string> => {
+    let json = await submitTransaction(CC_FUNCS.GET_FRAME, [id]);
     console.log(json.toString());
+    return json.toString();
 }
 
-let getAllFrames = async () => {
-    let json = await submitTransaction("GetAllFrames", []);
+let getAllFrames = async (): Promise<string> => {
+    let json = await submitTransaction(CC_FUNCS.GET_ALL_FRAMES, []);
     console.log(json.toString());
+    return json.toString();
 }
+//################################################################################################################################
+//################################################################################################################################
+
+
+//#########################################################################
+//###   server setup and api endpoints
+//#########################################################################
+
+const app: Express = express();
+app.use(function(inRequest: Request, inResponse: Response, inNext: NextFunction) {
+    inResponse.header("Access-Control-Allow-Origin", "*");      //allows requests from any domain
+    inResponse.header("Access-Control-Allow-Methods", "GET,POST");   //allows these methods
+    inResponse.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept");   //allows these headers
+    inNext();
+});
+app.listen(8081, 'localhost', () => {
+    console.log("Server is running!");
+});
+
+// get reqs
+app.get("/parts/get/allFrames/", async (req, res) => {      // get all frames
+    let result = await getAllFrames();
+    res.send(result);
+});
+app.get("/parts/get/frame/:id", async (req, res) => {       // get specific frame
+    console.log(req.params.id);
+    let id: string = JSON.parse(req.params.id);
+    let result = await getFrame(id);
+    res.send(result);
+});
+
+// post reqs
+app.post("/parts/add/frame/:frame", async (req, res) => {   // add new frame
+    console.log(req.params.frame);
+    let frame: IFrame = JSON.parse(req.params.frame);
+    let arr: string[] = [
+        frame.id,
+        frame.size.toString(),
+        frame.color,
+        frame.price.toString()
+    ];
+
+    let result = await addFrame(arr);
+    res.send(result.toString());       // return either 0 for success or 1 for failure
+});
+
+//################################################################################################################################
+//################################################################################################################################
 
 async function main() {
     await initSetup();
     //await initLedger();
-    await getAllFrames();
+    //await addFrame(["SUBROSA_MR", "20.5", "RED", "229.99"]);
+    //await getAllFrames();
+    //await getFrame("SUBROSA_MR");
 }
 main();
