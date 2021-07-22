@@ -9,6 +9,7 @@ import "./css/navbar.css";
 import "./css/addPartSection.css";
 import "./css/viewPartSection.css";
 import "./css/addTransaction.css";
+import "./css/viewTransaction.css";
 
 // component imports
 import Base from "./components/base";

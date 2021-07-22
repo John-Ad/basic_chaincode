@@ -50,7 +50,7 @@ type Frame struct {
 // transaction object definition
 type Transaction struct {
 	TxID       string  `json:"txID"`
-	Buyer      string  `json:"Buyer"`
+	Buyer      string  `json:"buyer"`
 	Stage      string  `json:"stage"`
 	Items      []Frame `json:"items"`
 	NumOfItems int     `json:"numOfItems"`

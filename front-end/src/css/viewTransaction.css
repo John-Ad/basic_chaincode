@@ -1,0 +1,86 @@
+#viewTranContainer{
+    display: flex;
+    flex-direction: column;
+
+    width: 70%;
+    height: fit-content;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 10px;
+    padding-bottom: 20px;
+
+    background-color: rgb(20, 20, 20);
+
+    border: 2px solid rgb(20, 20, 20);
+    border-radius: 30px;
+}
+
+.viewTranDetails{
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-evenly;
+
+    width: 80%;
+    height: 10%;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 10px;
+
+    background-color: rgb(10, 10, 10);
+
+    border: 2px solid beige;
+    border-radius: 20px;
+}
+
+#viewTranItems{
+    flex-direction: column;
+}
+
+.viewTranDetailsTitle{
+    color: blueviolet;
+    height: fit-content;
+}
+
+.viewTranDetailsValue{
+    height: fit-content;
+}
+
+#viewTranSearch{
+    height: 5vh;
+
+    border: 2px solid beige;
+    border-radius: 20px;
+
+    align-self: center;
+    text-align: center;
+}
+
+#viewTranSearchBtn{
+    display: flex;
+    flex-direction: column;
+
+    width: 10%;
+    height: 5vh;
+
+    align-self: center;
+    justify-content: center;
+
+    color: beige;
+
+    border: 4px solid beige;
+    border-radius: 20px;
+}
+#viewTranSearchBtn:hover{
+    cursor: pointer;
+    color: blueviolet;
+    border-color: blueviolet;
+}
+
+
+
+

@@ -2,6 +2,7 @@ import Axios, { AxiosResponse } from "axios";
 
 export enum GET_REQ_TYPES {
     GET_FRAME = `http://localhost:8081/parts/get/frame/`,
+    GET_TRAN = `http://localhost:8081/transactions/get/`,
 }
 
 export enum POST_REQ_TYPES {

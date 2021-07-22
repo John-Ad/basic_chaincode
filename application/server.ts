@@ -119,6 +119,12 @@ let addTran = async (args: string[]): Promise<number> => {
         return 1;
     return 0;
 }
+
+let getTran = async (id: string): Promise<string> => {
+    let json = await submitTransaction(CC_FUNCS.GET_TRAN, [id]);
+    console.log(json.toString());
+    return json.toString();
+}
 //################################################################################################################################
 //################################################################################################################################
 
@@ -147,6 +153,12 @@ app.get("/parts/get/frame/:id", async (req, res) => {       // get specific fram
     console.log(req.params.id);
     let id: string = JSON.parse(req.params.id);
     let result = await getFrame(id);
+    res.send(result);
+});
+app.get("/transactions/get/:id", async (req, res) => {       // get specific transaction
+    console.log(req.params.id);
+    let id: string = JSON.parse(req.params.id);
+    let result = await getTran(id);
     res.send(result);
 });
 

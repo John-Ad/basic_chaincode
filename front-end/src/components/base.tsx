@@ -6,6 +6,7 @@ import Navbar from "./navbar";
 import AddPartSection from "./addPartSection";
 import ViewPartSection from "./viewPartSection";
 import AddTranSection from "./addTransaction";
+import ViewTransaction from "./viewTransaction";
 
 // connection imports
 import Connection from "../connection";
@@ -27,7 +28,7 @@ class Base extends Component<{}, IState> {
 
         this.state = {
             connection: new Connection(),
-            currentSection: SECTIONS.ADD_TRAN
+            currentSection: SECTIONS.VIEW_TRAN
         }
     }
 
@@ -64,6 +65,10 @@ class Base extends Component<{}, IState> {
         let res = await this.state.connection.postReq(POST_REQ_TYPES.ADD_TRAN, tran);
         return res === 0;
     }
+    getTran = async (txID: string): Promise<ITransaction> => {
+        let res = await this.state.connection.getReq(GET_REQ_TYPES.GET_TRAN, txID);
+        return res;
+    }
     //########################################################
 
 
@@ -86,6 +91,9 @@ class Base extends Component<{}, IState> {
                     }
                     {this.state.currentSection === SECTIONS.ADD_TRAN &&
                         <AddTranSection addTran={this.addTran} />
+                    }
+                    {this.state.currentSection === SECTIONS.VIEW_TRAN &&
+                        <ViewTransaction getTran={this.getTran} />
                     }
                 </div>
             </div>
