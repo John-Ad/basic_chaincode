@@ -15,7 +15,8 @@
 
     margin-top: 4px;
 
-    background-color: rgb(40, 40, 40);
+    background-color: rgb(30, 30, 30);
+    color: dimgray;
 }
 .navOpts:hover{
     color: red;

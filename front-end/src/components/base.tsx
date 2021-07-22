@@ -5,6 +5,7 @@ import React, { Component } from "react";
 import Navbar from "./navbar";
 import AddPartSection from "./addPartSection";
 import ViewPartSection from "./viewPartSection";
+import AddTranSection from "./addTransaction";
 
 // connection imports
 import Connection from "../connection";
@@ -26,7 +27,7 @@ class Base extends Component<{}, IState> {
 
         this.state = {
             connection: new Connection(),
-            currentSection: SECTIONS.VIEW_PART
+            currentSection: SECTIONS.ADD_TRAN
         }
     }
 
@@ -53,13 +54,15 @@ class Base extends Component<{}, IState> {
     //########################################################
     addPart = async (frame: IFrame): Promise<boolean> => {       // Add a new part
         let res = await this.state.connection.postReq(POST_REQ_TYPES.ADD_FRAME, frame);
-        if (res !== 0)
-            return false;
-        return true;
+        return res === 0;
     }
     searchPart = async (id: string): Promise<IFrame> => {        // search for existing part
         let res: IFrame = await this.state.connection.getReq(GET_REQ_TYPES.GET_FRAME, id);
         return res;
+    }
+    addTran = async (tran: ITransaction): Promise<boolean> => {
+        let res = await this.state.connection.postReq(POST_REQ_TYPES.ADD_TRAN, tran);
+        return res === 0;
     }
     //########################################################
 
@@ -80,6 +83,9 @@ class Base extends Component<{}, IState> {
                     }
                     {this.state.currentSection === SECTIONS.VIEW_PART &&
                         <ViewPartSection searchPart={this.searchPart} />
+                    }
+                    {this.state.currentSection === SECTIONS.ADD_TRAN &&
+                        <AddTranSection addTran={this.addTran} />
                     }
                 </div>
             </div>

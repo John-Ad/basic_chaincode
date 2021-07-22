@@ -111,6 +111,14 @@ let getAllFrames = async (): Promise<string> => {
     console.log(json.toString());
     return json.toString();
 }
+
+let addTran = async (args: string[]): Promise<number> => {
+    let json = await submitTransaction(CC_FUNCS.ADD_TRAN, args);
+    console.log(json.toString());
+    if (json.length !== 0)
+        return 1;
+    return 0;
+}
 //################################################################################################################################
 //################################################################################################################################
 
@@ -156,15 +164,38 @@ app.post("/parts/add/frame/:frame", async (req, res) => {   // add new frame
     let result = await addFrame(arr);
     res.send(result.toString());       // return either 0 for success or 1 for failure
 });
+app.post("/transactions/add/:tran", async (req, res) => {   // add new transaction
+    console.log(req.params.tran);
+
+    let tran: ITransaction = JSON.parse(req.params.tran);
+    let items: string[] = [];
+
+    tran.items.forEach((item) => {
+        items.push(item.id);
+    });
+
+    let arr: string[] = [
+        tran.txID,
+        tran.buyer,
+        JSON.stringify(items),
+        tran.numOfItems.toString(),
+        TRAN_TYPES.TRAN_SALE
+    ];
+
+    let result = await addTran(arr);
+    res.send(result.toString());
+});
 
 //################################################################################################################################
 //################################################################################################################################
 
 async function main() {
     await initSetup();
-    //await initLedger();
-    //await addFrame(["SUBROSA_MR", "20.5", "RED", "229.99"]);
-    //await getAllFrames();
-    //await getFrame("SUBROSA_MR");
+    await initLedger();
+    await addFrame(["SUBROSA_MR", "20.5", "RED", "229.99"]);
+    await getAllFrames();
+    await getFrame("SUBROSA_MR");
+    console.log("########################### END OF INIT #############################");
+    console.log("");
 }
 main();

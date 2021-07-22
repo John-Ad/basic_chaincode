@@ -50,15 +50,15 @@ class ViewPartSection extends Component<IProps, IState> {
                     <input onChange={(ev) => this.setState({ searchInput: ev.target.value })} id="viewPartSearchInput" type="text" placeholder="enter your search here" />
                 </div>
                 <br></br>
-                <div className="itemDetailsDiv" id="viewPartSearchSubmitDiv">
-                    <h3 onClick={async () => {
-                        let res: IFrame = await this.props.searchPart(this.state.searchInput);
-                        if (res) {
-                            this.setState({ currFrame: res });
-                        } else {
-                            alert("frame not found");
-                        }
-                    }} className="detailTitle" id="viewPartSearchSubmit">Submit</h3>
+                <div className="itemDetailsDiv" id="viewPartSearchSubmitDiv" onClick={async () => {
+                    let res: IFrame = await this.props.searchPart(this.state.searchInput);
+                    if (res) {
+                        this.setState({ currFrame: res });
+                    } else {
+                        alert("frame not found");
+                    }
+                }}>
+                    <h3 className="detailTitle" id="viewPartSearchSubmit">Submit</h3>
                 </div>
             </div>
         );

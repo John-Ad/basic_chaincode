@@ -1,0 +1,115 @@
+#addTranContainer{
+    display: flex;
+    flex-direction: column;
+
+    width: 70%;
+    height: fit-content;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 10px;
+    padding-bottom: 20px;
+
+    background-color: rgb(20, 20, 20);
+
+    border: 2px solid rgb(20, 20, 20);
+    border-radius: 30px;
+}
+
+.addTranDetails{
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-evenly;
+
+    width: 80%;
+    height: 10%;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 10px;
+
+    background-color: rgb(10, 10, 10);
+
+    border: 2px solid beige;
+    border-radius: 20px;
+}
+
+.addTranDetailsTitle{
+    color: blueviolet;
+    align-self: center;
+}
+
+.addTranDetailsValue{
+    width: 50%;
+    height: 70%;
+
+    align-self: center;
+    text-align: center;
+
+    border: 1px solid beige;
+    border-radius: 20px;
+}
+
+#submitTran{
+    width: 40%;
+    justify-content: center;
+}
+#submitTran:hover{
+    cursor: pointer;
+    border-color: blueviolet;
+    color: blueviolet;
+}
+#addTranSubmitVal{
+    align-self: center;
+}
+
+/* add item box */
+#addTranDetailsAddItem{
+    flex-direction: column;
+
+    height: fit-content;
+}
+
+#addTranAddItem{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+#addTranAddItemIn{
+    width: 25%;
+    height: 50%;
+}
+
+#addTranAddItemAdd{
+    display: flex;
+    flex-direction: column;
+
+    width: 10%;
+    height: 30px;
+
+    align-self: center;
+    justify-content: center;
+
+    border: 3px solid beige;
+    border-radius: 10px;
+
+    color: darkgray;
+    background-color: rgb(15, 15, 15);
+}
+
+#addTranAddItemAdd:hover{
+    cursor: pointer;
+    border-color: blueviolet;
+    color: blueviolet;
+}
+
+.addTranItem{
+
+}
+
+
+

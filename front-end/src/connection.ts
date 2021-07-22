@@ -5,7 +5,8 @@ export enum GET_REQ_TYPES {
 }
 
 export enum POST_REQ_TYPES {
-    ADD_FRAME = `http://localhost:8081/parts/add/frame/`
+    ADD_FRAME = `http://localhost:8081/parts/add/frame/`,
+    ADD_TRAN = `http://localhost:8081/transactions/add/`
 }
 
 export interface IFrame {
@@ -29,17 +30,21 @@ class Connection {
         //this.test();
     }
 
+    // for testing purposes
     test = async () => {
         let resp = await Axios.get(`http://localhost:8081/parts/frame/${JSON.stringify("hello")}`);
         console.log(resp.data);
     }
+    //#####################################
 
+    // handle get requests
     getReq = async (reqType: GET_REQ_TYPES, data: any): Promise<any> => {
         let resp = await Axios.get(reqType + `${JSON.stringify(data)}`);
         console.log(resp.data);
         return resp.data;
     }
 
+    // handle post requests
     postReq = async (reqType: POST_REQ_TYPES, data: any): Promise<any> => {
         let resp = await Axios.post(reqType + `${JSON.stringify(data)}`, {});
         console.log(resp.data);
