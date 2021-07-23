@@ -186,6 +186,14 @@ func (smartContr *SmartContract) TransactionExists(ctx contractapi.TransactionCo
 
 //	get frame
 func (smartContr *SmartContract) GetFrame(ctx contractapi.TransactionContextInterface, id string) (*Frame, error) {
+	exists, err := smartContr.FrameExists(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if !exists {
+		return nil, fmt.Errorf("frame does not exist")
+	}
+
 	key, err := ctx.GetStub().CreateCompositeKey(CK_PART, []string{PART_FRAME, id})
 	if err != nil {
 		return nil, err
@@ -207,6 +215,14 @@ func (smartContr *SmartContract) GetFrame(ctx contractapi.TransactionContextInte
 
 //	get transaction
 func (smartContr *SmartContract) GetTransaction(ctx contractapi.TransactionContextInterface, id string) (*Transaction, error) {
+	exists, err := smartContr.TransactionExists(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if !exists {
+		return nil, fmt.Errorf("transaction does not exist")
+	}
+
 	key, err := ctx.GetStub().CreateCompositeKey(CK_TRAN, []string{TRAN_SALE, id})
 	if err != nil {
 		return nil, err

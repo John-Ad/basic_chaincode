@@ -1,5 +1,7 @@
 import Axios, { AxiosResponse } from "axios";
 
+export const ERROR: string = "ERROR";
+
 export enum GET_REQ_TYPES {
     GET_FRAME = `http://localhost:8081/parts/get/frame/`,
     GET_TRAN = `http://localhost:8081/transactions/get/`,

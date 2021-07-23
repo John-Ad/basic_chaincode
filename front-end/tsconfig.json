@@ -3,12 +3,15 @@
         "allowSyntheticDefaultImports": true,
         "moduleResolution":"node",
         "noImplicitAny": true,
-        "module": "es6",
         "jsx":"react",
+        "module": "es6",
         "target": "es5",
         "allowJs": true
     },
-    "include":["src"],
+    "include":[
+        "./src/components/",
+        "./src/"
+    ],
     "files": [
         "src/main.ts"
     ]

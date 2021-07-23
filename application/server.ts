@@ -20,6 +20,9 @@ import { IFrame, ITransaction, TRAN_TYPES, SALE_STAGES, CC_FUNCS } from './inter
 //###   fabric network setup
 //#########################################################################
 
+// error const
+const ERROR: string = "ERROR";
+
 // consts for network initialization
 const channelName = 'mychannel';
 const chaincodeName = 'basic';
@@ -83,6 +86,7 @@ async function submitTransaction(functionName: string, args: string[]): Promise<
         return res;
     } catch (err) {
         console.log(err);
+        return null;
     }
 }
 
@@ -94,16 +98,19 @@ let initLedger = async () => {
 
 let addFrame = async (args: string[]): Promise<number> => {
     let json = await submitTransaction(CC_FUNCS.ADD_FRAME, args);
-    console.log(json.toString());
-    if (json.length !== 0)
-        return 1;
-    return 0;
+    //console.log(json.toString());
+    if (json)
+        return 0;
+    return 1;
 }
 
 let getFrame = async (id: string): Promise<string> => {
     let json = await submitTransaction(CC_FUNCS.GET_FRAME, [id]);
-    console.log(json.toString());
-    return json.toString();
+    if (json) {
+        console.log(json.toString());
+        return json.toString();
+    }
+    return "ERROR";
 }
 
 let getAllFrames = async (): Promise<string> => {
@@ -114,16 +121,19 @@ let getAllFrames = async (): Promise<string> => {
 
 let addTran = async (args: string[]): Promise<number> => {
     let json = await submitTransaction(CC_FUNCS.ADD_TRAN, args);
-    console.log(json.toString());
-    if (json.length !== 0)
-        return 1;
-    return 0;
+    //console.log(json.toString());
+    if (json)
+        return 0;
+    return 1;
 }
 
 let getTran = async (id: string): Promise<string> => {
     let json = await submitTransaction(CC_FUNCS.GET_TRAN, [id]);
-    console.log(json.toString());
-    return json.toString();
+    if (json) {
+        console.log(json.toString());
+        return json.toString();
+    }
+    return "ERROR";
 }
 //################################################################################################################################
 //################################################################################################################################
@@ -153,12 +163,14 @@ app.get("/parts/get/frame/:id", async (req, res) => {       // get specific fram
     console.log(req.params.id);
     let id: string = JSON.parse(req.params.id);
     let result = await getFrame(id);
+    console.log(result);
     res.send(result);
 });
 app.get("/transactions/get/:id", async (req, res) => {       // get specific transaction
     console.log(req.params.id);
     let id: string = JSON.parse(req.params.id);
     let result = await getTran(id);
+    console.log(result);
     res.send(result);
 });
 
@@ -195,6 +207,7 @@ app.post("/transactions/add/:tran", async (req, res) => {   // add new transacti
     ];
 
     let result = await addTran(arr);
+    console.log(result);
     res.send(result.toString());
 });
 
@@ -203,8 +216,8 @@ app.post("/transactions/add/:tran", async (req, res) => {   // add new transacti
 
 async function main() {
     await initSetup();
-    await initLedger();
-    await addFrame(["SUBROSA_MR", "20.5", "RED", "229.99"]);
+    //await initLedger();
+    //await addFrame(["SUBROSA_MR", "20.5", "RED", "229.99"]);
     await getAllFrames();
     await getFrame("SUBROSA_MR");
     console.log("########################### END OF INIT #############################");

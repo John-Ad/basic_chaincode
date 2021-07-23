@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { ITransaction } from "../connection";
+import { ERROR, ITransaction } from "../connection";
 
 interface IState {
     transaction: ITransaction,
     searchInput: string
 }
 interface IProps {
-    getTran(txID: string): Promise<ITransaction>
+    getTran(txID: string): Promise<any>
 }
 
 class ViewTransaction extends Component<IProps, IState> {
@@ -66,11 +66,11 @@ class ViewTransaction extends Component<IProps, IState> {
                     <h3 className="viewTranDetailsTitle">Search:</h3>
                     <input id="viewTranSearch" placeholder="Enter txID" onChange={(ev) => { this.setState({ searchInput: ev.target.value }) }} />
                     <div id="viewTranSearchBtn" onClick={async () => {
-                        let res: ITransaction = await this.props.getTran(this.state.searchInput);
-                        if (res) {
-                            this.setState({ transaction: res })
-                        } else {
+                        let res = await this.props.getTran(this.state.searchInput);
+                        if (res === ERROR) {
                             alert("Transaction not found");
+                        } else {
+                            this.setState({ transaction: res })
                         }
                     }}>
                         <h3>Find</h3>

@@ -1,13 +1,13 @@
 // react imports
 import React, { Component } from "react";
-import { IFrame } from "../connection";
+import { ERROR, IFrame } from "../connection";
 
 interface IState {
     searchInput: string
     currFrame: IFrame
 }
 interface IProps {
-    searchPart(id: string): Promise<IFrame>
+    searchPart(id: string): Promise<any>
 }
 
 class ViewPartSection extends Component<IProps, IState> {
@@ -51,11 +51,11 @@ class ViewPartSection extends Component<IProps, IState> {
                 </div>
                 <br></br>
                 <div className="itemDetailsDiv" id="viewPartSearchSubmitDiv" onClick={async () => {
-                    let res: IFrame = await this.props.searchPart(this.state.searchInput);
-                    if (res) {
-                        this.setState({ currFrame: res });
-                    } else {
+                    let res: any = await this.props.searchPart(this.state.searchInput);
+                    if (res === ERROR) {
                         alert("frame not found");
+                    } else {
+                        this.setState({ currFrame: res });
                     }
                 }}>
                     <h3 className="detailTitle" id="viewPartSearchSubmit">Submit</h3>

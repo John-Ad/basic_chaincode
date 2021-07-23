@@ -57,7 +57,7 @@ class Base extends Component<{}, IState> {
         let res = await this.state.connection.postReq(POST_REQ_TYPES.ADD_FRAME, frame);
         return res === 0;
     }
-    searchPart = async (id: string): Promise<IFrame> => {        // search for existing part
+    searchPart = async (id: string): Promise<any> => {        // search for existing part
         let res: IFrame = await this.state.connection.getReq(GET_REQ_TYPES.GET_FRAME, id);
         return res;
     }
@@ -65,7 +65,7 @@ class Base extends Component<{}, IState> {
         let res = await this.state.connection.postReq(POST_REQ_TYPES.ADD_TRAN, tran);
         return res === 0;
     }
-    getTran = async (txID: string): Promise<ITransaction> => {
+    getTran = async (txID: string): Promise<any> => {
         let res = await this.state.connection.getReq(GET_REQ_TYPES.GET_TRAN, txID);
         return res;
     }

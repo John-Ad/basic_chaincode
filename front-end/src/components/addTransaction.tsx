@@ -151,6 +151,8 @@ class AddTranSection extends Component<IProps, IState> {
                     let res = await this.props.addTran(tran);
                     if (res) {
                         alert("successfully added transaction");
+                    } else {
+                        alert("failed to add transaction");
                     }
                 }}>
                     <h3 id="addTranSubmitVal">Submit</h3>
